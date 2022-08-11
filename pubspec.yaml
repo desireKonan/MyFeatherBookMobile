@@ -1,5 +1,5 @@
 name: my_feather_book_mobile
-description: A new Flutter project.
+description: Productivity App for goals fixing and taking fun.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -51,6 +51,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
