@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/screen/counter_page.dart';
 import 'package:my_feather_book_mobile/screen/home_page.dart';
+import 'package:my_feather_book_mobile/screen/notes/note_form_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,9 +28,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         routes: {
-          '/': (context) => const MyHomePage(title: 'MyFeatherBook Home Page'),
+          '/': (context) => const MyHomePage(),
           '/counter': (context) =>
-              const MyCounterPage(title: 'MyFeatherBookPage')
+              const MyCounterPage(title: 'MyFeatherBookPage'),
+          '/note-form': (context) => const NoteFormPage()
         },
         initialRoute: "/");
   }

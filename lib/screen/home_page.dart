@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
+import 'package:my_feather_book_mobile/components/card_notes.dart';
+import 'package:my_feather_book_mobile/screen/template_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -12,37 +11,28 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void _passToScreen() {
-    Navigator.pushNamed(context, '/counter');
+    Navigator.pushNamed(context, '/note-form');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-
-      drawer: buildDrawer(context),
-
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            )
-          ],
-        ),
+    return TemplatePage(
+      content: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(10, (index) {
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+            child: NoteCard(
+              index: index,
+            ),
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _passToScreen,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
