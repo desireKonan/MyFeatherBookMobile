@@ -32,3 +32,9 @@ Widget myDrawerList() {
     ),
   );
 }
+
+Widget snackbar(String title) {
+  return SnackBar(
+    content: Text(title),
+  );
+}

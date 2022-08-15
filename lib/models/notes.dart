@@ -1,36 +1,53 @@
-import 'dart:ffi';
-
 class Notes {
-  int id = 0;
-  String title = "";
-  String content = "";
-  DateTime createdDate = DateTime.now();
-  DateTime? updatedDate;
+  late int id;
+  late String title;
+  late String content;
+  late DateTime createdDate;
+  late DateTime updatedDate;
 
-  Notes(int id, String title, String content, DateTime createdDate,
-      DateTime updatedDate);
+  Notes({
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.createdDate,
+    required this.updatedDate,
+  });
 
-  Notes.init();
+  Notes.create(int id, String title, String content, DateTime createdDate,
+      DateTime updatedDate)
+      : this.id = id,
+        this.title = title,
+        this.content = content,
+        this.createdDate = createdDate,
+        this.updatedDate = updatedDate;
 
-  Notes copy(
-          {int? id,
-          String? title,
-          String? content,
-          DateTime? createdDate,
-          DateTime? updatedDate}) =>
-      Notes(id ?? this.id, title ?? this.title, content ?? this.content,
-          createdDate ?? this.createdDate, updatedDate!);
+  Notes.init()
+      : this.id = 0,
+        this.title = "",
+        this.content = "",
+        this.createdDate = DateTime.now(),
+        this.updatedDate = DateTime(0);
 
   @override
   String toString() {
-    return this.toJson().toString();
+    return "Note { id: $id, title: $title, content: $content, created_at: $createdDate, updated: $updatedDate }";
   }
 
-  Map<String, Object?> toJson() => {
-        "id": this.id,
+  static Notes fromJson(Map<String, dynamic> dataJson) => Notes(
+        id: dataJson['id'] as int,
+        title: dataJson['title'] as String,
+        content: dataJson['content'] as String,
+        createdDate: DateTime.parse(dataJson['createDate'] as String),
+        updatedDate: (dataJson['updateDate'] as String) != ""
+            ? DateTime.parse((dataJson['updateDate'] as String))
+            : DateTime(0),
+      );
+
+  Map<String, dynamic> toMap() => {
+        //"id": this.id,
         "title": this.title,
         "content": this.content,
-        "createdDate": this.createdDate,
-        "updatedDate": this.updatedDate
+        "createDate": this.createdDate.toIso8601String(),
+        "updateDate": this.updatedDate.toIso8601String()
       };
 }

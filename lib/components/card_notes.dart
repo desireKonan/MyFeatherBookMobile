@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:my_feather_book_mobile/models/notes.dart';
 
 class NoteCard extends StatelessWidget {
-  final int index;
+  final Notes note;
 
-  const NoteCard({Key? key, required this.index}) : super(key: key);
+  const NoteCard({Key? key, required this.note}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      margin: const EdgeInsets.all(10.5),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 122, 144, 240),
-        borderRadius: BorderRadius.circular(5.0),
+    return Card(
+      shadowColor: const Color.fromARGB(255, 97, 96, 94),
+      color: const Color.fromARGB(255, 133, 132, 128),
+      shape: const BeveledRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(70.0),
+        ),
       ),
-      width: 400,
-      height: 700,
-      child: Center(
+      child: SizedBox(
+        width: 150,
+        height: 300,
         child: Text(
-          'Text ' + index.toString(),
+          '${note.content}',
           style: const TextStyle(color: Colors.white),
         ),
       ),

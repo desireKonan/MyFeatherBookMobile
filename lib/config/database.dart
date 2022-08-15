@@ -11,9 +11,9 @@ class MyFeatherBookDatabase {
   MyFeatherBookDatabase._init();
 
   Future<Database> get database async {
-    if (database != null) return _database!;
+    if (_database != null) return _database!;
 
-    _database = await _initDB('myfeatherbook.db');
+    _database = await _initDB('my_feather_book.db');
     return _database!;
   }
 
@@ -21,17 +21,61 @@ class MyFeatherBookDatabase {
     final databasePath = await getDatabasesPath();
     final String path = join(databasePath, filePath);
 
-    print(path);
-
     return await openDatabase(
       path,
       version: 1,
-      onOpen: _openDB,
+      onCreate: _createDB,
     );
   }
 
-  Future<void> _openDB(Database db) async {
-    print("La base de données ${db.path} est ${db.isOpen}");
+  Future<void> _createDB(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE Notes(
+        id INTEGER PRIMARY KEY,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        createDate TEXT,
+        updateDate TEXT
+      );
+
+      CREATE TABLE Task(
+        id INTEGER PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        is_finished INTEGER NOT NULL,
+        createDate TEXT,
+        updateDate TEXT
+      );
+
+      CREATE TABLE Goals(
+        id INTEGER PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        is_accomplished INTEGER NOT NULL,
+        startDate TEXT,
+        endDate TEXT,
+        executionTime INTEGER,
+        createDate TEXT,
+        updateDate TEXT
+      );
+
+      CREATE TABLE SubGoals(
+        id INTEGER PRIMARY KEY,
+        content TEXT NOT NULL,
+        is_accomplished INTEGER,
+        goal_id INTEGER,
+        createDate TEXT,
+        updateDate TEXT
+      );
+
+      CREATE TABLE Diary(
+        id INTEGER PRIMARY KEY,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        createDate TEXT,
+        updateDate TEXT
+      );
+    ''');
   }
 
   Future<void> close() async {
