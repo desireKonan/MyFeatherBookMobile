@@ -7,13 +7,12 @@ class FeatherTextField extends StatelessWidget {
 
   final int? maxLine;
 
-  //final Function? tapped;
-
-  const FeatherTextField(
-      {Key? key, this.controller, required this.labelText, this.maxLine
-      /*this.tapped*/
-      })
-      : super(key: key);
+  const FeatherTextField({
+    Key? key,
+    this.controller,
+    required this.labelText,
+    this.maxLine,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

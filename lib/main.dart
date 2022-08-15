@@ -29,8 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const MyHomePage(),
-        '/counter': (context) =>
-            const MyCounterPage(title: 'MyFeatherBookPage'),
+        '/counter': (context) => const MyCounterPage(title: 'MyFeatherBookPage'),
         '/createNote': (context) => const NoteCreatePage(),
         //'/note': (context) => const
       },

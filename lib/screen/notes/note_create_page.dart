@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/feather_text_field.dart';
-import 'package:my_feather_book_mobile/config/database.dart';
-import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
+import 'package:my_feather_book_mobile/helpers/constants.dart';
 import 'package:my_feather_book_mobile/models/notes.dart';
 import 'package:my_feather_book_mobile/repository/note_repository.dart';
-import 'package:my_feather_book_mobile/screen/template_page.dart';
-import 'package:sqflite/sqflite.dart';
 
 class NoteCreatePage extends StatefulWidget {
   const NoteCreatePage({Key? key}) : super(key: key);
@@ -44,8 +41,13 @@ class _NoteCreatePageState extends State<NoteCreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return TemplatePage(
-      content: Form(
+    return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the TemplatePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: const Text(APP_NAME),
+      ),
+      body: Form(
         key: _formKey,
         child: SingleChildScrollView(
           controller: ScrollController(),
@@ -54,26 +56,6 @@ class _NoteCreatePageState extends State<NoteCreatePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                /*Container(
-                  alignment: Alignment.centerLeft,
-                  width: double.infinity,
-                  height: 50,
-                  color: const Color.fromARGB(255, 85, 165, 231),
-                  margin: const EdgeInsets.only(top: 0.1),
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Notes - Formulaire de saisie',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color.fromARGB(255, 247, 244, 244),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),*/
                 FeatherTextField(
                   controller: _titleController,
                   labelText: 'Titre',
@@ -89,22 +71,6 @@ class _NoteCreatePageState extends State<NoteCreatePage> {
                 const SizedBox(
                   height: 15,
                 ),
-                /*ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(100, 50),
-                    maximumSize: const Size(170, 75),
-                    primary: const Color.fromARGB(255, 21, 174, 103),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                    ),
-                  ),
-                  onPressed: _saveNotes,
-                  child: const Text(
-                    'Enregistrer',
-                    style: TextStyle(
-                        fontSize: 18, color: Color.fromARGB(255, 246, 248, 247)),
-                  ),
-                ),*/
               ],
             ),
           ),
