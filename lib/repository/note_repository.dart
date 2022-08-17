@@ -3,9 +3,9 @@ import 'package:my_feather_book_mobile/models/notes.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NoteRepository {
-  MyFeatherBookDatabase _myFeatherBookDatabase = MyFeatherBookDatabase.instance;
+  late MyFeatherBookDatabase _myFeatherBookDatabase;
 
-  NoteRepository();
+  NoteRepository() : _myFeatherBookDatabase = MyFeatherBookDatabase.instance;
 
   Future<List<Notes>> getAll() async {
     Database database = await _myFeatherBookDatabase.database;

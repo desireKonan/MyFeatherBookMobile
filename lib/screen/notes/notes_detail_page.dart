@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/feather_text_field.dart';
 import 'package:my_feather_book_mobile/helpers/constants.dart';
+import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
 import 'package:my_feather_book_mobile/models/notes.dart';
 import 'package:my_feather_book_mobile/repository/note_repository.dart';
 
@@ -78,6 +79,7 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
         // the App.build method, and use it to set our appbar title.
         title: const Text(APP_NAME),
       ),
+      drawer: buildDrawer(context),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(

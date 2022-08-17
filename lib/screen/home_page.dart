@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/card_notes.dart';
 import 'package:my_feather_book_mobile/helpers/constants.dart';
+import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
 import 'package:my_feather_book_mobile/models/notes.dart';
 import 'package:my_feather_book_mobile/repository/note_repository.dart';
 import 'package:my_feather_book_mobile/screen/notes/notes_detail_page.dart';
@@ -14,8 +15,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late List<Notes> _notes = List<Notes>.empty();
-
-  var _loading = false;
 
   late NoteRepository _noteRepository;
 
@@ -60,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: const Text(APP_NAME),
       ),
+      drawer: buildDrawer(context),
       body: FutureBuilder(
           initialData: List<Notes>.empty,
           future: _getNotes(),

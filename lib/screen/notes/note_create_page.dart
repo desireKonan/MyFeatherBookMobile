@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/feather_text_field.dart';
 import 'package:my_feather_book_mobile/helpers/constants.dart';
+import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
 import 'package:my_feather_book_mobile/models/notes.dart';
-import 'package:my_feather_book_mobile/repository/note_repository.dart';
+import 'package:my_feather_book_mobile/services/notes_services.dart';
 
 class NoteCreatePage extends StatefulWidget {
   const NoteCreatePage({Key? key}) : super(key: key);
@@ -13,30 +14,22 @@ class NoteCreatePage extends StatefulWidget {
 
 class _NoteCreatePageState extends State<NoteCreatePage> {
   //Clé du formulaire.
-  final _formKey = GlobalKey<FormState>();
+  late GlobalKey<FormState> _formKey;
 
-  final _titleController = TextEditingController();
+  late TextEditingController _titleController;
 
-  final _contentController = TextEditingController();
+  late TextEditingController _contentController;
 
-  final _noteRepository = NoteRepository();
+  late NotesService _noteServices;
 
-  var _isInserted = false;
-
-  void _saveNotes() async {
-    var note = Notes(
-      id: 0,
-      title: _titleController.text,
-      content: _contentController.text,
-      createdDate: DateTime.now(),
-      updatedDate: DateTime(0),
-    );
-
-    print(note.toString());
-
-    var notes = await _noteRepository.insert(note);
-
-    print("Effectué ! Voici les notes : $notes");
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _formKey = GlobalKey<FormState>();
+    _titleController = TextEditingController();
+    _contentController = TextEditingController();
+    _noteServices = NotesService();
   }
 
   @override
@@ -47,6 +40,7 @@ class _NoteCreatePageState extends State<NoteCreatePage> {
         // the App.build method, and use it to set our appbar title.
         title: const Text(APP_NAME),
       ),
+      drawer: buildDrawer(context),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -77,7 +71,11 @@ class _NoteCreatePageState extends State<NoteCreatePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _saveNotes,
+        onPressed: () => _noteServices.saveNotes(
+            Notes.init()
+              ..content = _contentController.text
+              ..title = _titleController.text,
+            context),
         child: const Icon(Icons.edit),
       ),
     );
