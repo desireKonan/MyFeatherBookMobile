@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/card_notes.dart';
 import 'package:my_feather_book_mobile/helpers/constants.dart';
 import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
-import 'package:my_feather_book_mobile/models/notes.dart';
-import 'package:my_feather_book_mobile/repository/note_repository.dart';
+import 'package:my_feather_book_mobile/models/dto/notes.dart';
+import 'package:my_feather_book_mobile/models/repository/note_repository.dart';
+import 'package:my_feather_book_mobile/presenter/list_notes_presenter.dart';
 import 'package:my_feather_book_mobile/screen/notes/notes_detail_page.dart';
+import 'package:my_feather_book_mobile/view/notes_view.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -14,30 +16,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late List<Notes> _notes = List<Notes>.empty();
+  /*late List<Notes> _notes = List<Notes>.empty();
 
   late NoteRepository _noteRepository;
 
   void _passToScreen() {
     Navigator.of(context).pushNamed('/createNote');
-  }
+  }*/
+
+  late NotesView _notesView;
+
+  late ListNotesPresenter _presenter;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _noteRepository = NoteRepository();
+    _notesView = NotesView(context: context);
+    _presenter = ListNotesPresenter(_notesView);
   }
 
   @override
   void dispose() {
-    _noteRepository.close();
+    _presenter.closeDB();
     super.dispose();
-  }
-
-  Future<List<Notes>> _getNotes() async {
-    _notes = await _noteRepository.getAll();
-    return _notes;
   }
 
   void _moveToCardNoteDetails(int index) {
@@ -62,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: buildDrawer(context),
       body: FutureBuilder(
           initialData: List<Notes>.empty,
-          future: _getNotes(),
+          future: _presenter.getNotes(),
           builder: (buildContext, snapshot) {
             if (!snapshot.hasData) {
               return const CircularProgressIndicator(
@@ -81,12 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisSpacing: 5.5,
                   ),
                   children: List.generate(
-                    _notes.length,
+                    _presenter.notes.length,
                     (index) => Builder(
                       builder: (context) => GestureDetector(
-                        onTap: () => _moveToCardNoteDetails(_notes[index].id),
+                        onTap: () =>
+                            _moveToCardNoteDetails(_presenter.notes[index].id),
                         child: NoteCard(
-                          note: _notes[index],
+                          note: _presenter.notes[index],
                         ),
                       ),
                     ),
@@ -96,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           }),
       floatingActionButton: FloatingActionButton(
-        onPressed: _passToScreen,
+        onPressed: _presenter.move,
         tooltip: 'Créée une nouvelle note',
         child: const Icon(Icons.add),
       ),

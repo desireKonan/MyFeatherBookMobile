@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/feather_text_field.dart';
 import 'package:my_feather_book_mobile/helpers/constants.dart';
 import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
-import 'package:my_feather_book_mobile/models/notes.dart';
-import 'package:my_feather_book_mobile/services/notes_services.dart';
+import 'package:my_feather_book_mobile/presenter/create_notes_presenter.dart';
+import 'package:my_feather_book_mobile/view/create_notes_view.dart';
 
 class NoteCreatePage extends StatefulWidget {
   const NoteCreatePage({Key? key}) : super(key: key);
@@ -13,23 +13,16 @@ class NoteCreatePage extends StatefulWidget {
 }
 
 class _NoteCreatePageState extends State<NoteCreatePage> {
-  //Clé du formulaire.
-  late GlobalKey<FormState> _formKey;
+  late CreateNotesView _notesView;
 
-  late TextEditingController _titleController;
-
-  late TextEditingController _contentController;
-
-  late NotesService _noteServices;
+  late CreateNotesPresenter _createNotesPresenter;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _formKey = GlobalKey<FormState>();
-    _titleController = TextEditingController();
-    _contentController = TextEditingController();
-    _noteServices = NotesService();
+    _notesView = CreateNotesView(context: context);
+    _createNotesPresenter = CreateNotesPresenter(_notesView);
   }
 
   @override
@@ -42,7 +35,7 @@ class _NoteCreatePageState extends State<NoteCreatePage> {
       ),
       drawer: buildDrawer(context),
       body: Form(
-        key: _formKey,
+        key: _notesView.formKey,
         child: SingleChildScrollView(
           controller: ScrollController(),
           child: Container(
@@ -51,14 +44,14 @@ class _NoteCreatePageState extends State<NoteCreatePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FeatherTextField(
-                  controller: _titleController,
+                  controller: _notesView.titleController,
                   labelText: 'Titre',
                 ),
                 const SizedBox(
                   height: 25,
                 ),
                 FeatherTextField(
-                  controller: _contentController,
+                  controller: _notesView.contentController,
                   labelText: 'Description',
                   maxLine: 22,
                 ),
@@ -71,11 +64,7 @@ class _NoteCreatePageState extends State<NoteCreatePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _noteServices.saveNotes(
-            Notes.init()
-              ..content = _contentController.text
-              ..title = _titleController.text,
-            context),
+        onPressed: _createNotesPresenter.saveNotes,
         child: const Icon(Icons.edit),
       ),
     );

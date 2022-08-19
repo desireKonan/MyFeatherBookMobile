@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/feather_text_field.dart';
 import 'package:my_feather_book_mobile/helpers/constants.dart';
 import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
-import 'package:my_feather_book_mobile/models/notes.dart';
-import 'package:my_feather_book_mobile/repository/note_repository.dart';
+import 'package:my_feather_book_mobile/models/dto/notes.dart';
+import 'package:my_feather_book_mobile/models/repository/note_repository.dart';
 
 class NoteDetailPage extends StatefulWidget {
   final int noteId;
@@ -45,7 +45,7 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
       _loading = true;
     });
 
-    _notes = await _noteRepository.getNote(index);
+    _notes = await _noteRepository.getData(index);
 
     print(_notes);
 

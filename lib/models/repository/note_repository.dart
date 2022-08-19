@@ -1,19 +1,24 @@
+import 'dart:ffi';
+
 import 'package:my_feather_book_mobile/config/database.dart';
-import 'package:my_feather_book_mobile/models/notes.dart';
+import 'package:my_feather_book_mobile/models/dto/notes.dart';
+import 'package:my_feather_book_mobile/models/repository/repository.dart';
 import 'package:sqflite/sqflite.dart';
 
-class NoteRepository {
-  late MyFeatherBookDatabase _myFeatherBookDatabase;
+class NoteRepository implements Repository<Notes, int> {
+  late final MyFeatherBookDatabase _myFeatherBookDatabase;
 
   NoteRepository() : _myFeatherBookDatabase = MyFeatherBookDatabase.instance;
 
+  @override
   Future<List<Notes>> getAll() async {
     Database database = await _myFeatherBookDatabase.database;
     List<Map<String, dynamic>> notes = await database.query("Notes");
     return notes.map((note) => Notes.fromJson(note)).toList();
   }
 
-  Future<Notes> getNote(int id) async {
+  @override
+  Future<Notes> getData(int id) async {
     Database database = await _myFeatherBookDatabase.database;
     List<Map<String, dynamic>> notes = await database.query(
       "Notes",
@@ -34,6 +39,7 @@ class NoteRepository {
     return newNote;
   }
 
+  @override
   Future<Notes> insert(Notes data) async {
     Database database = await _myFeatherBookDatabase.database;
     int isInserted = await database.insert(
@@ -56,6 +62,7 @@ class NoteRepository {
         updatedDate: data.updatedDate);
   }
 
+  @override
   Future<Notes> update(int id, Notes data) async {
     Database database = await _myFeatherBookDatabase.database;
     int isUpdated = await database.update(
@@ -67,7 +74,7 @@ class NoteRepository {
     );
 
     if (isUpdated == 0) {
-      throw Exception("Cette note n'existes pas !");
+      throw Exception("Erreur dans la modification de la note !");
     }
 
     return Notes(
@@ -78,7 +85,8 @@ class NoteRepository {
         updatedDate: data.updatedDate);
   }
 
-  Future<void> delete(int id) async {
+  @override
+  void delete(int id) async {
     Database database = await _myFeatherBookDatabase.database;
     int isDelete = await database.delete(
       "Notes",
@@ -87,10 +95,12 @@ class NoteRepository {
     );
 
     if (isDelete == 0) {
-      throw Exception("Cette note n'existes pas !");
+      throw Exception(
+          "Erreur de la suppression de la note ! Vous essayer de supprimer une note qui n'existe pas !");
     }
   }
 
+  @override
   void close() async {
     Database database = await _myFeatherBookDatabase.database;
     database.close();
