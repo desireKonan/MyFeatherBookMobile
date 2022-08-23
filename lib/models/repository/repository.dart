@@ -7,7 +7,7 @@ abstract class Repository<T, ID> {
 
   Future<T> update(ID id, T element);
 
-  void delete(ID id);
+  void deleteData(ID id);
 
   void close();
 }

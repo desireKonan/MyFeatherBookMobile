@@ -3,9 +3,8 @@ import 'package:my_feather_book_mobile/components/card_notes.dart';
 import 'package:my_feather_book_mobile/helpers/constants.dart';
 import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
-import 'package:my_feather_book_mobile/models/repository/note_repository.dart';
 import 'package:my_feather_book_mobile/presenter/list_notes_presenter.dart';
-import 'package:my_feather_book_mobile/screen/notes/notes_detail_page.dart';
+import 'package:my_feather_book_mobile/screen/notes/note_details_page.dart';
 import 'package:my_feather_book_mobile/view/notes_view.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,16 +14,12 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  /*late List<Notes> _notes = List<Notes>.empty();
+class _MyHomePageState extends State<MyHomePage> implements NotesView {
+  late List<Notes> _notes;
 
-  late NoteRepository _noteRepository;
+  String route = "/createNote";
 
-  void _passToScreen() {
-    Navigator.of(context).pushNamed('/createNote');
-  }*/
-
-  late NotesView _notesView;
+  bool _loading = true;
 
   late ListNotesPresenter _presenter;
 
@@ -32,8 +27,37 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _notesView = NotesView(context: context);
-    _presenter = ListNotesPresenter(_notesView);
+    _notes = List<Notes>.empty();
+    _presenter = ListNotesPresenter(this);
+
+    //refreshNotes();
+  }
+
+  @override
+  List<Notes> getNotes() => _notes;
+
+  @override
+  setNotes(List<Notes> notes) {
+    _notes = notes;
+  }
+
+  refreshNotes() async {
+    setState(() {
+      _loading = true;
+    });
+
+    _notes = await _presenter.getNotes();
+
+    debugPrint(_notes.toString());
+
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  @override
+  void move() {
+    Navigator.of(context).pushNamed(route);
   }
 
   @override
@@ -46,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint("cliqué !");
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => NoteDetailPage(
+        builder: (context) => NoteDetailsPage(
           noteId: index,
         ),
       ),
@@ -63,12 +87,14 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: buildDrawer(context),
       body: FutureBuilder(
-          initialData: List<Notes>.empty,
+          initialData: _notes,
           future: _presenter.getNotes(),
           builder: (buildContext, snapshot) {
             if (!snapshot.hasData) {
-              return const CircularProgressIndicator(
-                color: Colors.blueAccent,
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blueAccent,
+                ),
               );
             } else {
               //Grid view concernant les informations
@@ -83,13 +109,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisSpacing: 5.5,
                   ),
                   children: List.generate(
-                    _presenter.notes.length,
+                    _notes.length,
                     (index) => Builder(
                       builder: (context) => GestureDetector(
-                        onTap: () =>
-                            _moveToCardNoteDetails(_presenter.notes[index].id),
+                        onTap: () => _moveToCardNoteDetails(_notes[index].id),
                         child: NoteCard(
-                          note: _presenter.notes[index],
+                          note: _notes[index],
                         ),
                       ),
                     ),

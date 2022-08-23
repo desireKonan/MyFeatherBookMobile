@@ -12,11 +12,10 @@ class ListNotesPresenter implements Presenter {
       : _repository = NoteRepository(),
         this._view = view;
 
-  List<Notes> get notes => _view.notes;
-
   Future<List<Notes>> getNotes() async {
-    _view.notes = await _repository.getAll();
-    return _view.notes;
+    List<Notes> notes = await _repository.getAll();
+    _view.setNotes(notes);
+    return notes;
   }
 
   void closeDB() {

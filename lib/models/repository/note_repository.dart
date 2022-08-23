@@ -86,7 +86,7 @@ class NoteRepository implements Repository<Notes, int> {
   }
 
   @override
-  void delete(int id) async {
+  void deleteData(int id) async {
     Database database = await _myFeatherBookDatabase.database;
     int isDelete = await database.delete(
       "Notes",
