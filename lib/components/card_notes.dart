@@ -14,11 +14,11 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shadowColor: const Color.fromARGB(255, 97, 96, 94),
-      color: const Color.fromARGB(255, 244, 244, 243),
+      shadowColor: const Color.fromARGB(255, 242, 242, 238),
+      color: const Color.fromARGB(255, 244, 114, 27),
       shape: const RoundedRectangleBorder(
         side: BorderSide(
-          color: Color.fromARGB(255, 139, 137, 137),
+          color: Color.fromARGB(255, 236, 95, 13),
           width: 0.2,
           style: BorderStyle.solid,
         ),
@@ -28,7 +28,7 @@ class NoteCard extends StatelessWidget {
       ),
       elevation: 2.0,
       child: Container(
-        height: 300,
+        height: 150,
         margin: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,7 +39,7 @@ class NoteCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: Color.fromARGB(255, 122, 120, 120),
+                color: Color.fromARGB(255, 242, 237, 237),
               ),
             ),
             const SizedBox(
@@ -48,7 +48,7 @@ class NoteCard extends StatelessWidget {
             Text(
               '${note.content}',
               style: const TextStyle(
-                color: Color.fromARGB(255, 122, 120, 120),
+                color: Color.fromARGB(255, 242, 237, 237),
               ),
             ),
             const SizedBox(
@@ -59,7 +59,7 @@ class NoteCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w300,
-                color: Color.fromARGB(255, 122, 120, 120),
+                color: Color.fromARGB(255, 242, 237, 237),
               ),
             )
           ],

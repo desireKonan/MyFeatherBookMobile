@@ -6,7 +6,7 @@ class CustomDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 105, 210, 111),
+      color: Colors.teal,
       width: double.infinity,
       height: 200,
       padding: const EdgeInsets.only(top: 20.0),

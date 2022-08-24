@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_feather_book_mobile/components/custom_snackbar.dart';
 import 'package:my_feather_book_mobile/components/feather_text_field.dart';
 import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
@@ -65,13 +66,11 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
 
   @override
   Notes getNotes() {
-    if (widget.noteId is Null) {
-      _notes.id = 0;
-      _notes.title = _titleController.text;
-      _notes.content = _contentController.text;
-      _notes.createdDate = DateTime.now();
-      _notes.updatedDate = DateTime(0);
-    }
+    _notes.id = 0;
+    _notes.title = _titleController.text;
+    _notes.content = _contentController.text;
+    _notes.createdDate = DateTime.now();
+    _notes.updatedDate = DateTime(0);
     return _notes;
   }
 
@@ -90,11 +89,8 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
 
   @override
   void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Insertion effectuée avec succès !'),
-      ),
-    );
+    const CustomSnackbar(text: 'Insertion effectuée avec succès !')
+        .renderSnackBar(context);
   }
 
   @override
@@ -129,7 +125,6 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppHeader(),
-      drawer: buildDrawer(context),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -160,7 +155,12 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _createUpdateNotesPresenter.saveNotes(widget.noteId!),
+        onPressed: () {
+          if (widget.noteId is Null)
+            _createUpdateNotesPresenter.saveNotes();
+          else
+            _createUpdateNotesPresenter.updateNotes(widget.noteId!);
+        },
         child: const Icon(Icons.edit),
       ),
     );

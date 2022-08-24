@@ -14,7 +14,6 @@ class ListNotesPresenter implements Presenter {
 
   Future<List<Notes>> getNotes() async {
     List<Notes> notes = await _repository.getAll();
-    _view.setNotes(notes);
     return notes;
   }
 

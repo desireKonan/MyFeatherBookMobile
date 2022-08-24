@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/card_notes.dart';
+import 'package:my_feather_book_mobile/components/my_feather_transition_page.dart';
 import 'package:my_feather_book_mobile/helpers/constants.dart';
 import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
 import 'package:my_feather_book_mobile/presenter/list_notes_presenter.dart';
 import 'package:my_feather_book_mobile/screen/notes/note_details_page.dart';
 import 'package:my_feather_book_mobile/view/notes_view.dart';
+import 'package:staggered_grid_view_flutter/rendering/sliver_staggered_grid.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -19,8 +23,6 @@ class _MyHomePageState extends State<MyHomePage> implements NotesView {
 
   String route = "/createNote";
 
-  bool _loading = true;
-
   late ListNotesPresenter _presenter;
 
   @override
@@ -30,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> implements NotesView {
     _notes = List<Notes>.empty();
     _presenter = ListNotesPresenter(this);
 
-    //refreshNotes();
+    refreshNotes();
   }
 
   @override
@@ -41,17 +43,10 @@ class _MyHomePageState extends State<MyHomePage> implements NotesView {
     _notes = notes;
   }
 
-  refreshNotes() async {
+  Future refreshNotes() async {
+    List<Notes> notes = await _presenter.getNotes();
     setState(() {
-      _loading = true;
-    });
-
-    _notes = await _presenter.getNotes();
-
-    debugPrint(_notes.toString());
-
-    setState(() {
-      _loading = false;
+      _notes = notes;
     });
   }
 
@@ -67,10 +62,9 @@ class _MyHomePageState extends State<MyHomePage> implements NotesView {
   }
 
   void _moveToCardNoteDetails(int index) {
-    debugPrint("cliqué !");
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => NoteDetailsPage(
+      MyFeatherTransitionPage(
+        child: NoteDetailsPage(
           noteId: index,
         ),
       ),
@@ -83,49 +77,53 @@ class _MyHomePageState extends State<MyHomePage> implements NotesView {
       appBar: AppBar(
         // Here we take the value from the TemplatePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text(APP_NAME),
+        //title: const Text(APP_NAME),
+        backgroundColor: Colors.teal,
       ),
       drawer: buildDrawer(context),
-      body: FutureBuilder(
-          initialData: _notes,
-          future: _presenter.getNotes(),
-          builder: (buildContext, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blueAccent,
-                ),
-              );
-            } else {
-              //Grid view concernant les informations
-              return Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 15,
-                ),
-                child: GridView(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 5.5,
+      body: RefreshIndicator(
+        onRefresh: refreshNotes,
+        child: FutureBuilder(
+            initialData: _notes,
+            future: _presenter.getNotes(),
+            builder: (buildContext, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.blueAccent,
                   ),
-                  children: List.generate(
-                    _notes.length,
-                    (index) => Builder(
-                      builder: (context) => GestureDetector(
-                        onTap: () => _moveToCardNoteDetails(_notes[index].id),
-                        child: NoteCard(
-                          note: _notes[index],
-                        ),
-                      ),
+                );
+              } else {
+                //Grid view concernant les informations
+                return Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
                     ),
-                  ),
-                ),
-              );
-            }
-          }),
+                    child: StaggeredGridView.countBuilder(
+                      shrinkWrap: true,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      itemCount: _notes.length,
+                      itemBuilder: ((context, index) {
+                        return GestureDetector(
+                          onTap: () => _moveToCardNoteDetails(_notes[index].id),
+                          child: NoteCard(
+                            note: _notes[index],
+                          ),
+                        );
+                      }),
+                      staggeredTileBuilder: (index) =>
+                          const StaggeredTile.fit(1),
+                    ));
+              }
+            }),
+      ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.teal,
         onPressed: _presenter.move,
-        tooltip: 'Créée une nouvelle note',
+        tooltip: 'Créer une nouvelle note',
         child: const Icon(Icons.add),
       ),
     );
