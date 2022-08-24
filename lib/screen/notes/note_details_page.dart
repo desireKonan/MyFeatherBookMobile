@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/custom_snackbar.dart';
 import 'package:my_feather_book_mobile/components/feather_text_field.dart';
-import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
 import 'package:my_feather_book_mobile/presenter/create_update_notes_presenter.dart';
 import 'package:my_feather_book_mobile/presenter/delete_notes_presenter.dart';
