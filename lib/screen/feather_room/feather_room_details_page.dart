@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/custom_snackbar.dart';
 import 'package:my_feather_book_mobile/components/outline_text_field.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
-import 'package:my_feather_book_mobile/presenter/notes/create_update_notes_presenter.dart';
-import 'package:my_feather_book_mobile/presenter/notes/delete_notes_presenter.dart';
-import 'package:my_feather_book_mobile/view/notes/create_notes_view.dart';
+import 'package:my_feather_book_mobile/presenter/feather_room/create_update_feather_room_presenter.dart';
+import 'package:my_feather_book_mobile/presenter/feather_room/delete_feather_room_presenter.dart';
+import 'package:my_feather_book_mobile/view/feather_room/create_feather_room_view.dart';
 
-class NoteDetailsPage extends StatefulWidget {
+class FeatherRoomDetailsPage extends StatefulWidget {
   final int? noteId;
 
-  const NoteDetailsPage({Key? key, this.noteId}) : super(key: key);
+  const FeatherRoomDetailsPage({Key? key, this.noteId}) : super(key: key);
 
   @override
-  State<NoteDetailsPage> createState() => _NoteDetailsPageState();
+  State<FeatherRoomDetailsPage> createState() => _FeatherRoomDetailsPageState();
 }
 
-class _NoteDetailsPageState extends State<NoteDetailsPage>
-    implements CreateUpdateNotesView {
+class _FeatherRoomDetailsPageState extends State<FeatherRoomDetailsPage>
+    implements CreateUpdateFeatherRoomView {
   //Clé du formulaire.
   late GlobalKey<FormState> _formKey;
 
@@ -26,9 +26,9 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
 
   late Notes _notes;
 
-  late CreateUpdateNotesPresenter _createUpdateNotesPresenter;
+  late CreateUpdateFeatherRoomPresenter _createUpdateNotesPresenter;
 
-  late DeleteNotesPresenter _deleteNotesPresenter;
+  late DeleteFeatherRoomPresenter _deleteNotesPresenter;
 
   bool _loading = false;
 
@@ -45,8 +45,8 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
     _titleController = TextEditingController();
     _contentController = TextEditingController();
     _notes = Notes.init();
-    _createUpdateNotesPresenter = CreateUpdateNotesPresenter(this);
-    _deleteNotesPresenter = DeleteNotesPresenter(this);
+    _createUpdateNotesPresenter = CreateUpdateFeatherRoomPresenter(this);
+    _deleteNotesPresenter = DeleteFeatherRoomPresenter(this);
 
     //Chargement du détails.
     if (!(widget.noteId is Null)) {

@@ -7,12 +7,12 @@ class CustomSnackbar {
 
   SnackBar _render() {
     return SnackBar(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.teal,
       content: Text(
         text,
         style: const TextStyle(color: Colors.white),
       ),
-      duration: const Duration(microseconds: 5000),
+      duration: const Duration(milliseconds: 10000),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),

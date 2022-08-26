@@ -11,50 +11,61 @@ class FeatherRoomHomePage extends StatefulWidget {
 }
 
 class _FeatherRoomPageState extends State<FeatherRoomHomePage> {
+  int _currentIndex = 0;
+
+  List<Widget> _screens = [
+    NoteListPage(),
+    Center(child: Text('Page 2')),
+    FeatherRoomHomePage(),
+    Center(child: Text('Page 4'))
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      animationDuration: const Duration(milliseconds: 150),
-      child: Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the TemplatePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          //title: const Text(APP_NAME),
+    return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the TemplatePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        //title: const Text(APP_NAME),
+        backgroundColor: Colors.teal,
+      ),
+      drawer: buildDrawer(context),
+      body: IndexedStack(
+        sizing: StackFit.passthrough,
+        index: _currentIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(color: Colors.teal),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.teal,
-          bottom: const TabBar(
-            tabs: [
-              Tab(
-                text: 'Notes',
-                icon: Icon(Icons.note, color: Colors.white),
-                height: 100,
-              ),
-              Tab(
-                text: 'Objectifs personnels',
-                icon: Icon(FeatherIcons.activity, color: Colors.white),
-                height: 100,
-              ),
-              Tab(
-                text: 'Feather room',
-                icon: Icon(FeatherIcons.feather, color: Colors.white),
-                height: 100,
-              ),
-              Tab(
-                text: 'Tableau de bord',
-                icon: Icon(Icons.pie_chart, color: Colors.white),
-                height: 100,
-              ),
-            ],
-          ),
-        ),
-        drawer: buildDrawer(context),
-        body: TabBarView(
-          //controller: ,
-          children: const [
-            NoteListPage(),
-            Center(child: Text('Page 2')),
-            Center(child: Text('Page 3')),
-            Center(child: Text('Page 4'))
+          selectedItemColor: Colors.white70,
+          unselectedItemColor: Colors.white60,
+          currentIndex: _currentIndex,
+          onTap: (value) => setState(() {
+            _currentIndex = value;
+          }),
+          iconSize: 25,
+          selectedFontSize: 15,
+          unselectedFontSize: 10,
+          items: const [
+            BottomNavigationBarItem(
+              label: 'Notes',
+              icon: Icon(Icons.note, color: Colors.white54),
+            ),
+            BottomNavigationBarItem(
+              label: 'Objectifs personnels',
+              icon: Icon(FeatherIcons.activity, color: Colors.white54),
+            ),
+            BottomNavigationBarItem(
+              label: 'Feather room',
+              icon: Icon(FeatherIcons.feather, color: Colors.white54),
+            ),
+            BottomNavigationBarItem(
+              label: 'Tableau de bord',
+              icon: Icon(Icons.pie_chart, color: Colors.white54),
+            )
           ],
         ),
       ),

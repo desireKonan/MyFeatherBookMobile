@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
 import 'package:my_feather_book_mobile/models/repository/note_repository.dart';
 import 'package:my_feather_book_mobile/models/repository/repository.dart';
-import 'package:my_feather_book_mobile/view/create_notes_view.dart';
+import 'package:my_feather_book_mobile/view/notes/create_notes_view.dart';
 
 class DeleteNotesPresenter {
   late Repository<Notes, int> _repository;

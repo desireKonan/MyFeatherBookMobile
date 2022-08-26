@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FeatherTextField extends StatelessWidget {
+class OutlineTextField extends StatelessWidget {
   final TextEditingController? controller;
 
   final String labelText;
 
   final int? maxLine;
 
-  const FeatherTextField({
+  const OutlineTextField({
     Key? key,
     this.controller,
     required this.labelText,
@@ -18,26 +18,23 @@ class FeatherTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
-        horizontal: 18,
+        horizontal: 20,
       ),
       child: TextFormField(
         controller: controller,
+        style: const TextStyle(
+          backgroundColor: Colors.white30,
+          color: Colors.teal,
+        ),
         decoration: InputDecoration(
           fillColor: Colors.teal,
           hintText: labelText,
           hintStyle: const TextStyle(
-            fontSize: 17,
+            fontSize: 18,
             color: Color.fromARGB(255, 166, 172, 177),
           ),
-          border: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color.fromARGB(255, 61, 144, 212),
-              width: 5,
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(7.0),
-            ),
-          ),
+          border: InputBorder.none,
+          focusColor: Colors.teal,
         ),
         maxLines: maxLine,
       ),

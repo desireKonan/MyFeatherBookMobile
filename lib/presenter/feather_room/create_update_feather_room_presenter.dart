@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
 import 'package:my_feather_book_mobile/models/repository/note_repository.dart';
 import 'package:my_feather_book_mobile/models/repository/repository.dart';
-import 'package:my_feather_book_mobile/view/create_notes_view.dart';
+import 'package:my_feather_book_mobile/view/feather_room/create_feather_room_view.dart';
 
-class CreateUpdateNotesPresenter {
+class CreateUpdateFeatherRoomPresenter {
   late Repository<Notes, int> _repository;
-  late CreateUpdateNotesView _view;
+  late CreateUpdateFeatherRoomView _view;
 
-  final message = "Notes ajoutée avec succès !";
+  final message = "Notes du journal de bord ajoutée avec succès !";
 
-  CreateUpdateNotesPresenter(CreateUpdateNotesView view)
+  CreateUpdateFeatherRoomPresenter(CreateUpdateFeatherRoomView view)
       : _repository = NoteRepository(),
         this._view = view;
 
