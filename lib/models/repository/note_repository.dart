@@ -48,8 +48,6 @@ class NoteRepository implements Repository<Notes, int> {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    database.close();
-
     if (isInserted == 0) {
       throw Exception("Erreur lors de l'ajout de la note !");
     }

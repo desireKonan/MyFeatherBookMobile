@@ -71,57 +71,61 @@ class _FeatherRoomListPageState extends State<FeatherRoomListPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: refreshNotes,
-        child: FutureBuilder(
-            initialData: _notes,
-            future: _presenter.getNotes(),
-            builder: (buildContext, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text('${snapshot.error}',
-                        style: const TextStyle(backgroundColor: Colors.teal)),
-                  );
-                }
-                //Grid view concernant les informations
-                return Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5,
-                  ),
-                  child: StaggeredGridView.countBuilder(
-                    shrinkWrap: true,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    crossAxisCount: 2,
-                    itemCount: _notes.length,
-                    itemBuilder: ((context, index) {
-                      return GestureDetector(
-                        onTap: () => _moveToCardNoteDetails(_notes[index].id),
-                        child: NoteCard(
-                          note: _notes[index],
-                        ),
-                      );
-                    }),
-                    staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
-                  ),
+    return RefreshIndicator(
+      onRefresh: refreshNotes,
+      child: FutureBuilder(
+          initialData: _notes,
+          future: _presenter.getNotes(),
+          builder: (buildContext, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}',
+                      style: const TextStyle(backgroundColor: Colors.teal)),
                 );
               }
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.teal,
+              //Grid view concernant les informations
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+                child: Column(
+                  children: [
+                    const Text("Notes"),
+                    StaggeredGridView.countBuilder(
+                      shrinkWrap: true,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      itemCount: _notes.length,
+                      itemBuilder: ((context, index) {
+                        return GestureDetector(
+                          onTap: () => _moveToCardNoteDetails(_notes[index].id),
+                          child: NoteCard(
+                            note: _notes[index],
+                          ),
+                        );
+                      }),
+                      staggeredTileBuilder: (index) =>
+                          const StaggeredTile.fit(1),
+                    ),
+                    FloatingActionButton(
+                      backgroundColor: Colors.teal,
+                      onPressed: _presenter.move,
+                      tooltip: 'Créer une nouvelle note',
+                      child: const Icon(Icons.add),
+                    ),
+                  ],
                 ),
               );
-            }),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal,
-        onPressed: _presenter.move,
-        tooltip: 'Créer une nouvelle note',
-        child: const Icon(Icons.add),
-      ),
+            }
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.teal,
+              ),
+            );
+          }),
     );
   }
 }

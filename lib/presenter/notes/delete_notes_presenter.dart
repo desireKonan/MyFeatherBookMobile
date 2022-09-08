@@ -25,9 +25,7 @@ class DeleteNotesPresenter {
 
   void deleteNote(int id) async {
     _repository.deleteData(id);
-
     Navigator.of(_view.getContext()).pop();
-
     _view.showSnackBar(_message);
   }
 }

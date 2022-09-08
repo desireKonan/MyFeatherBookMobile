@@ -12,6 +12,13 @@ class ListNotesPresenter implements Presenter {
       : _repository = NoteRepository(),
         this._view = view;
 
+  Future<void> fetchNotes() async {
+    _repository.getAll().then((notes) {
+      _view.loadNotesOnView(notes);
+      print(notes);
+    });
+  }
+
   Future<List<Notes>> getNotes() async {
     List<Notes> notes = await _repository.getAll();
     return notes;

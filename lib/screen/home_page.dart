@@ -16,7 +16,7 @@ class _FeatherRoomPageState extends State<FeatherRoomHomePage> {
   List<Widget> _screens = [
     NoteListPage(),
     Center(child: Text('Page 2')),
-    FeatherRoomHomePage(),
+    Center(child: Text('Page 3')),
     Center(child: Text('Page 4'))
   ];
 
@@ -36,35 +36,44 @@ class _FeatherRoomPageState extends State<FeatherRoomHomePage> {
         children: _screens,
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(color: Colors.teal),
+        height: 100,
+        decoration: const BoxDecoration(
+            color: Colors.teal,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(5.5),
+              topRight: Radius.circular(5.5),
+            ),
+            boxShadow: [
+              BoxShadow(color: Colors.black87),
+            ]),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.teal,
-          selectedItemColor: Colors.white70,
-          unselectedItemColor: Colors.white60,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
           currentIndex: _currentIndex,
           onTap: (value) => setState(() {
             _currentIndex = value;
           }),
-          iconSize: 25,
+          iconSize: 35,
           selectedFontSize: 15,
-          unselectedFontSize: 10,
+          unselectedFontSize: 13,
           items: const [
             BottomNavigationBarItem(
               label: 'Notes',
-              icon: Icon(Icons.note, color: Colors.white54),
+              icon: Icon(FeatherIcons.edit, color: Colors.white60),
             ),
             BottomNavigationBarItem(
-              label: 'Objectifs personnels',
-              icon: Icon(FeatherIcons.activity, color: Colors.white54),
+              label: 'Objectifs',
+              icon: Icon(FeatherIcons.activity, color: Colors.white60),
             ),
             BottomNavigationBarItem(
-              label: 'Feather room',
-              icon: Icon(FeatherIcons.feather, color: Colors.white54),
+              label: 'Journal',
+              icon: Icon(FeatherIcons.feather, color: Colors.white60),
             ),
             BottomNavigationBarItem(
-              label: 'Tableau de bord',
-              icon: Icon(Icons.pie_chart, color: Colors.white54),
+              label: 'Dashboard',
+              icon: Icon(Icons.pie_chart, color: Colors.white60),
             )
           ],
         ),

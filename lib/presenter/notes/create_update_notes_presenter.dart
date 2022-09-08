@@ -23,17 +23,13 @@ class CreateUpdateNotesPresenter {
 
   void saveNotes() async {
     Notes notes = await _repository.insert(this.notes);
-
-    Navigator.of(_view.getContext()).pop();
-
     _view.showSnackBar(message);
+
+    _view.move();
   }
 
   void updateNotes(int id) async {
     Notes notes = await _repository.update(id, this.notes);
-
-    Navigator.of(_view.getContext()).pop();
-
     _view.showSnackBar(message);
   }
 }

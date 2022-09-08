@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:my_feather_book_mobile/components/custom_snackbar.dart';
 import 'package:my_feather_book_mobile/components/outline_text_field.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
+import 'package:my_feather_book_mobile/models/notifiers/note_model.dart';
 import 'package:my_feather_book_mobile/presenter/notes/create_update_notes_presenter.dart';
 import 'package:my_feather_book_mobile/presenter/notes/delete_notes_presenter.dart';
 import 'package:my_feather_book_mobile/view/notes/create_notes_view.dart';
+import 'package:provider/provider.dart';
 
 class NoteDetailsPage extends StatefulWidget {
   final int? noteId;
@@ -58,12 +60,6 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Notes getNotes() {
     _notes.id = 0;
     _notes.title = _titleController.text;
@@ -107,11 +103,16 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
         actions: [
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 1.0),
-            child: MaterialButton(
-              onPressed: () => _deleteNotesPresenter.deleteNote(widget.noteId!),
-              child: const Icon(
-                Icons.delete,
-                color: Colors.white,
+            child: Consumer<NoteModel>(
+              builder: (context, value, child) => MaterialButton(
+                onPressed: () {
+                  _deleteNotesPresenter.deleteNote(widget.noteId!);
+                  value.remove(_notes);
+                },
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -156,15 +157,20 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal,
-        onPressed: () {
-          if (widget.noteId is Null)
-            _createUpdateNotesPresenter.saveNotes();
-          else
-            _createUpdateNotesPresenter.updateNotes(widget.noteId!);
-        },
-        child: const Icon(Icons.edit),
+      floatingActionButton: Consumer<NoteModel>(
+        builder: (context, value, child) => FloatingActionButton(
+          backgroundColor: Colors.teal,
+          onPressed: () {
+            if (widget.noteId is Null) {
+              _createUpdateNotesPresenter.saveNotes();
+              value.add(_notes);
+            } else {
+              _createUpdateNotesPresenter.updateNotes(widget.noteId!);
+              value.update(widget.noteId!, _notes);
+            }
+          },
+          child: const Icon(Icons.edit),
+        ),
       ),
     );
   }

@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:my_feather_book_mobile/screen/counter_page.dart';
+import 'package:my_feather_book_mobile/models/notifiers/note_model.dart';
 import 'package:my_feather_book_mobile/screen/home_page.dart';
 import 'package:my_feather_book_mobile/screen/notes/note_details_page.dart';
 import 'package:my_feather_book_mobile/screen/notes/note_list_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => NoteModel(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -14,8 +14,8 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shadowColor: const Color.fromARGB(255, 242, 242, 238),
-      color: const Color.fromARGB(255, 244, 114, 27),
+      shadowColor: Color.fromARGB(255, 55, 55, 54),
+      color: const Color.fromARGB(255, 22, 160, 130),
       shape: const RoundedRectangleBorder(
         side: BorderSide(
           color: Color.fromARGB(255, 236, 95, 13),
@@ -26,7 +26,7 @@ class NoteCard extends StatelessWidget {
           Radius.circular(10.0),
         ),
       ),
-      elevation: 2.0,
+      elevation: 5.0,
       child: Container(
         height: 150,
         margin: const EdgeInsets.all(10.0),
