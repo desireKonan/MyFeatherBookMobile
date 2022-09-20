@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:my_feather_book_mobile/config/database.dart';
 import 'package:my_feather_book_mobile/models/dto/diary.dart';
 import 'package:my_feather_book_mobile/models/repository/repository.dart';
@@ -13,7 +11,7 @@ class DiaryRepository implements Repository<Diary, int> {
   @override
   Future<List<Diary>> getAll() async {
     Database database = await _myFeatherBookDatabase.database;
-    List<Map<String, dynamic>> notes = await database.query("Diary");
+    List<Map<String, dynamic>> notes = await database.query("DailyNote");
     return notes.map((note) => Diary.fromJson(note)).toList();
   }
 
@@ -21,7 +19,7 @@ class DiaryRepository implements Repository<Diary, int> {
   Future<Diary> getData(int id) async {
     Database database = await _myFeatherBookDatabase.database;
     List<Map<String, dynamic>> notes = await database.query(
-      "Diary",
+      "DailyNote",
       distinct: true,
       columns: ['id', 'title', 'content', 'createDate', 'updateDate'],
       where: 'id = ?',
@@ -44,7 +42,7 @@ class DiaryRepository implements Repository<Diary, int> {
   Future<Diary> insert(Diary data) async {
     Database database = await _myFeatherBookDatabase.database;
     int isInserted = await database.insert(
-      "Diary",
+      "DailyNote",
       data.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -67,7 +65,7 @@ class DiaryRepository implements Repository<Diary, int> {
   Future<Diary> update(int id, Diary data) async {
     Database database = await _myFeatherBookDatabase.database;
     int isUpdated = await database.update(
-      "Diary",
+      "DailyNote",
       data.toMap(),
       where: 'id = ?',
       whereArgs: [id],
@@ -91,7 +89,7 @@ class DiaryRepository implements Repository<Diary, int> {
   void deleteData(int id) async {
     Database database = await _myFeatherBookDatabase.database;
     int isDelete = await database.delete(
-      "Diary",
+      "DailyNote",
       where: 'id = ?',
       whereArgs: [id],
     );

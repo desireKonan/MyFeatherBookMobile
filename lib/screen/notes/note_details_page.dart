@@ -5,6 +5,7 @@ import 'package:my_feather_book_mobile/models/dto/notes.dart';
 import 'package:my_feather_book_mobile/models/notifiers/note_model.dart';
 import 'package:my_feather_book_mobile/presenter/notes/create_update_notes_presenter.dart';
 import 'package:my_feather_book_mobile/presenter/notes/delete_notes_presenter.dart';
+import 'package:my_feather_book_mobile/utils/helper.dart';
 import 'package:my_feather_book_mobile/view/notes/create_notes_view.dart';
 import 'package:provider/provider.dart';
 
@@ -116,11 +117,54 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
               ),
             ),
           ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 1.0),
+            child: MaterialButton(
+              onPressed: () {
+                var noteProvider = Provider.of<NoteModel>(
+                  context,
+                  listen: false,
+                );
+                if (widget.noteId is Null) {
+                  _createUpdateNotesPresenter.saveNotes();
+                  noteProvider.add(_notes);
+                } else {
+                  _createUpdateNotesPresenter.updateNotes(widget.noteId!);
+                  noteProvider.update(widget.noteId!, _notes);
+                }
+              },
+              child: const Icon(
+                Icons.edit,
+                color: Colors.white70,
+              ),
+            ),
+          ),
         ],
       );
     }
     return AppBar(
       backgroundColor: Colors.teal,
+      actions: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 1.0),
+          child: MaterialButton(
+            onPressed: () {
+              var noteProvider = Provider.of<NoteModel>(context, listen: false);
+              if (widget.noteId is Null) {
+                _createUpdateNotesPresenter.saveNotes();
+                noteProvider.add(_notes);
+              } else {
+                _createUpdateNotesPresenter.updateNotes(widget.noteId!);
+                noteProvider.update(widget.noteId!, _notes);
+              }
+            },
+            child: const Icon(
+              Icons.edit,
+              color: Colors.white70,
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -128,48 +172,69 @@ class _NoteDetailsPageState extends State<NoteDetailsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppHeader(),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          controller: ScrollController(),
-          child: Container(
-            margin: const EdgeInsets.only(top: 15.5),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlineTextField(
-                  controller: _titleController,
-                  labelText: 'Titre',
+      body: Container(
+        margin: const EdgeInsets.only(top: 15.5, bottom: 15.5),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              OutlineTextField(
+                controller: _titleController,
+                labelText: 'Titre',
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              OutlineTextField(
+                controller: _contentController,
+                labelText: 'Description',
+                maxLine: 22,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Créée le ',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    Text(
+                      getDate(_notes.createdDate),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w300, fontSize: 15),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 25,
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Mis à jour le ',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    Text(
+                      getDate(_notes.updatedDate),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w300, fontSize: 15),
+                    ),
+                  ],
                 ),
-                OutlineTextField(
-                  controller: _contentController,
-                  labelText: 'Description',
-                  maxLine: 22,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+            ],
           ),
-        ),
-      ),
-      floatingActionButton: Consumer<NoteModel>(
-        builder: (context, value, child) => FloatingActionButton(
-          backgroundColor: Colors.teal,
-          onPressed: () {
-            if (widget.noteId is Null) {
-              _createUpdateNotesPresenter.saveNotes();
-              value.add(_notes);
-            } else {
-              _createUpdateNotesPresenter.updateNotes(widget.noteId!);
-              value.update(widget.noteId!, _notes);
-            }
-          },
-          child: const Icon(Icons.edit),
         ),
       ),
     );

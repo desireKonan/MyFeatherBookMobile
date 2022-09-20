@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:my_feather_book_mobile/helpers/ui_helpers.dart';
+import 'package:my_feather_book_mobile/screen/feather_room/feather_room_list_page.dart';
 import 'package:my_feather_book_mobile/screen/notes/note_list_page.dart';
 
 class FeatherRoomHomePage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _FeatherRoomPageState extends State<FeatherRoomHomePage> {
 
   List<Widget> _screens = [
     NoteListPage(),
-    Center(child: Text('Page 2')),
+    FeatherRoomListPage(),
     Center(child: Text('Page 3')),
     Center(child: Text('Page 4'))
   ];
@@ -61,15 +62,15 @@ class _FeatherRoomPageState extends State<FeatherRoomHomePage> {
           items: const [
             BottomNavigationBarItem(
               label: 'Notes',
-              icon: Icon(FeatherIcons.edit, color: Colors.white60),
+              icon: Icon(Icons.note_add, color: Colors.white60),
             ),
             BottomNavigationBarItem(
               label: 'Objectifs',
-              icon: Icon(FeatherIcons.activity, color: Colors.white60),
+              icon: Icon(Icons.star, color: Colors.white60),
             ),
             BottomNavigationBarItem(
               label: 'Journal',
-              icon: Icon(FeatherIcons.feather, color: Colors.white60),
+              icon: Icon(Icons.edit, color: Colors.white60),
             ),
             BottomNavigationBarItem(
               label: 'Dashboard',

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_feather_book_mobile/components/card_notes.dart';
 import 'package:my_feather_book_mobile/components/my_feather_transition_page.dart';
-import 'package:my_feather_book_mobile/models/dto/notes.dart';
+import 'package:my_feather_book_mobile/models/dto/diary.dart';
 import 'package:my_feather_book_mobile/presenter/feather_room/list_feather_room_presenter.dart';
 import 'package:my_feather_book_mobile/screen/notes/note_details_page.dart';
 import 'package:my_feather_book_mobile/view/feather_room/feather_room_view.dart';
-import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
-import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class FeatherRoomListPage extends StatefulWidget {
   const FeatherRoomListPage({Key? key}) : super(key: key);
@@ -17,9 +15,9 @@ class FeatherRoomListPage extends StatefulWidget {
 
 class _FeatherRoomListPageState extends State<FeatherRoomListPage>
     implements FeatherRoomView {
-  late List<Notes> _notes;
+  late List<Diary> _notes;
 
-  String route = "/createNote";
+  String route = "/createDiary";
 
   late ListFeatherRoomPresenter _presenter;
 
@@ -27,22 +25,22 @@ class _FeatherRoomListPageState extends State<FeatherRoomListPage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _notes = List<Notes>.empty();
+    _notes = List<Diary>.empty();
     _presenter = ListFeatherRoomPresenter(this);
 
     refreshNotes();
   }
 
   @override
-  List<Notes> getNotes() => _notes;
+  List<Diary> getDailyBoard() => _notes;
 
   @override
-  setNotes(List<Notes> notes) {
+  setDailyNotes(List<Diary> notes) {
     _notes = notes;
   }
 
   Future refreshNotes() async {
-    List<Notes> notes = await _presenter.getNotes();
+    List<Diary> notes = await _presenter.getDailyNotes();
     setState(() {
       _notes = notes;
       print(_notes.toList().toString());
@@ -75,7 +73,7 @@ class _FeatherRoomListPageState extends State<FeatherRoomListPage>
       onRefresh: refreshNotes,
       child: FutureBuilder(
           initialData: _notes,
-          future: _presenter.getNotes(),
+          future: _presenter.getDailyNotes(),
           builder: (buildContext, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -92,8 +90,13 @@ class _FeatherRoomListPageState extends State<FeatherRoomListPage>
                 ),
                 child: Column(
                   children: [
-                    const Text("Notes"),
-                    StaggeredGridView.countBuilder(
+                    const Text("Daily Notes"),
+                    TableCalendar(
+                      focusedDay: DateTime.now(),
+                      firstDay: DateTime.utc(2010, 1, 1),
+                      lastDay: DateTime.utc(2045, 12, 31),
+                    ),
+                    /*StaggeredGridView.countBuilder(
                       shrinkWrap: true,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
@@ -115,7 +118,7 @@ class _FeatherRoomListPageState extends State<FeatherRoomListPage>
                       onPressed: _presenter.move,
                       tooltip: 'Créer une nouvelle note',
                       child: const Icon(Icons.add),
-                    ),
+                    ),*/
                   ],
                 ),
               );

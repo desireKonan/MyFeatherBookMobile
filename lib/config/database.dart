@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -29,16 +28,20 @@ class MyFeatherBookDatabase {
   }
 
   Future<void> _createDB(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE Notes(
+    Batch batch = db.batch();
+
+    batch.execute('''
+      CREATE TABLE IF NOT EXISTS Notes(
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         content TEXT NOT NULL,
         createDate TEXT,
         updateDate TEXT
       );
+    ''');
 
-      CREATE TABLE Task(
+    batch.execute('''
+      CREATE TABLE IF NOT EXISTS Task(
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT NOT NULL,
@@ -46,8 +49,10 @@ class MyFeatherBookDatabase {
         createDate TEXT,
         updateDate TEXT
       );
+    ''');
 
-      CREATE TABLE Goals(
+    batch.execute('''
+      CREATE TABLE IF NOT EXISTS Goals(
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT NOT NULL,
@@ -58,8 +63,10 @@ class MyFeatherBookDatabase {
         createDate TEXT,
         updateDate TEXT
       );
+    ''');
 
-      CREATE TABLE SubGoals(
+    batch.execute('''
+      CREATE TABLE IF NOT EXISTS SubGoals(
         id INTEGER PRIMARY KEY,
         content TEXT NOT NULL,
         is_accomplished INTEGER,
@@ -67,8 +74,10 @@ class MyFeatherBookDatabase {
         createDate TEXT,
         updateDate TEXT
       );
+    ''');
 
-      CREATE TABLE Diary(
+    batch.execute('''
+      CREATE TABLE IF NOT EXISTS DailyNote(
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         content TEXT NOT NULL,
@@ -76,6 +85,10 @@ class MyFeatherBookDatabase {
         updateDate TEXT
       );
     ''');
+
+    List<dynamic> res = await batch.commit(exclusive: true, noResult: true);
+
+    res.forEach((element) => print(element));
   }
 
   Future<void> close() async {

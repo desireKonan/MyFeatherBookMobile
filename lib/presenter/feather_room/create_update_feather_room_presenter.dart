@@ -8,7 +8,7 @@ class CreateUpdateFeatherRoomPresenter {
   late Repository<Notes, int> _repository;
   late CreateUpdateFeatherRoomView _view;
 
-  final message = "Notes du journal de bord ajoutée avec succès !";
+  final _MESSAGE = "Notes du journal de bord ajoutée avec succès !";
 
   CreateUpdateFeatherRoomPresenter(CreateUpdateFeatherRoomView view)
       : _repository = NoteRepository(),
@@ -26,7 +26,7 @@ class CreateUpdateFeatherRoomPresenter {
 
     Navigator.of(_view.getContext()).pop();
 
-    _view.showSnackBar(message);
+    _view.showSnackBar(_MESSAGE);
   }
 
   void updateNotes(int id) async {
@@ -34,6 +34,6 @@ class CreateUpdateFeatherRoomPresenter {
 
     Navigator.of(_view.getContext()).pop();
 
-    _view.showSnackBar(message);
+    _view.showSnackBar(_MESSAGE);
   }
 }

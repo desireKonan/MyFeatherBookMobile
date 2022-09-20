@@ -8,14 +8,18 @@ class CustomSnackbar {
   SnackBar _render() {
     return SnackBar(
       backgroundColor: Colors.teal,
-      content: Text(
-        text,
-        style: const TextStyle(color: Colors.white),
+      content: Container(
+        margin: const EdgeInsets.all(5.5),
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
-      duration: const Duration(milliseconds: 10000),
+      duration: const Duration(milliseconds: 1500),
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.2),
+        ),
       ),
     );
   }

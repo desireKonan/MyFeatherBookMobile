@@ -29,6 +29,7 @@ class _NoteListPageState extends State<NoteListPage> implements NotesView {
     // TODO: implement initState
     super.initState();
     _presenter = ListNotesPresenter(this);
+    _presenter.fetchNotes();
   }
 
   @override
@@ -89,17 +90,23 @@ class _NoteListPageState extends State<NoteListPage> implements NotesView {
                           const Text(
                             "Notes",
                             style: TextStyle(
-                                fontSize: 40,
+                                fontSize: 20,
                                 color: Colors.teal,
                                 shadows: [
                                   Shadow(),
                                 ]),
                           ),
-                          FloatingActionButton(
-                            backgroundColor: Colors.teal,
+                          const SizedBox(width: 30),
+                          MaterialButton(
+                            height: 40,
                             onPressed: _presenter.move,
-                            tooltip: 'Créer une nouvelle note',
-                            child: const Icon(Icons.add),
+                            elevation: 2.0,
+                            color: Colors.teal,
+                            shape: const CircleBorder(),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white70,
+                            ),
                           ),
                         ],
                       ),

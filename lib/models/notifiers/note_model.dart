@@ -25,15 +25,11 @@ class NoteModel with ChangeNotifier {
   }
 
   void update(int id, Notes note) {
-    if (_notes.contains(note)) {
-      _notes.elementAt(id)
-        ..content = note.content
-        ..title = note.title
-        ..updatedDate = DateTime.now();
-      notifyListeners();
-    } else {
-      throw Exception("L'élement à supprimer n'existes pas !");
-    }
+    Notes notes = _notes.elementAt(id);
+    notes.content = note.content;
+    notes.title = note.title;
+    notes.updatedDate = DateTime.now();
+    notifyListeners();
   }
 
   void clear() {

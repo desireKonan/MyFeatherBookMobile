@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_feather_book_mobile/models/dto/notes.dart';
+import 'package:my_feather_book_mobile/utils/helper.dart';
 
 class NoteCard extends StatelessWidget {
   final Notes note;
 
   const NoteCard({Key? key, required this.note}) : super(key: key);
 
-  String getDate() {
-    return DateFormat.yMMMMEEEEd().format(note.createdDate);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
-      shadowColor: Color.fromARGB(255, 55, 55, 54),
+      shadowColor: const Color.fromARGB(255, 55, 55, 54),
       color: const Color.fromARGB(255, 22, 160, 130),
       shape: const RoundedRectangleBorder(
         side: BorderSide(
@@ -55,7 +52,7 @@ class NoteCard extends StatelessWidget {
               height: 5.0,
             ),
             Text(
-              getDate(),
+              getDate(note.createdDate),
               style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w300,
