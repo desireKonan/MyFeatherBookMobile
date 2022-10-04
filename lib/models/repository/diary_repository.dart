@@ -47,8 +47,6 @@ class DiaryRepository implements Repository<Diary, int> {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    database.close();
-
     if (isInserted == 0) {
       throw Exception("Erreur lors de l'ajout de la note du journal de bord !");
     }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:my_feather_book_mobile/models/notifiers/daily_bord_model.dart';
 import 'package:my_feather_book_mobile/models/notifiers/note_model.dart';
 import 'package:my_feather_book_mobile/screen/home_page.dart';
 import 'package:my_feather_book_mobile/screen/notes/note_details_page.dart';
@@ -6,14 +8,19 @@ import 'package:my_feather_book_mobile/screen/notes/note_list_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => NoteModel(),
-        ),
-      ],
-      child: const MyApp(),
+  initializeDateFormatting().then(
+    (_) => runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => NoteModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => DailyBoardModel(),
+          ),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }

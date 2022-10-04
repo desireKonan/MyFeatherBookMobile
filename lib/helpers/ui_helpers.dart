@@ -8,13 +8,11 @@ Widget buildDrawer(BuildContext context) {
     backgroundColor: Colors.white,
     width: 300,
     child: SingleChildScrollView(
-      child: Container(
-        child: Column(
-          children: [
-            const CustomDrawerHeader(),
-            myDrawerList(),
-          ],
-        ),
+      child: Column(
+        children: [
+          const CustomDrawerHeader(),
+          myDrawerList(),
+        ],
       ),
     ),
   );

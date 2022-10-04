@@ -12,6 +12,13 @@ class ListFeatherRoomPresenter implements Presenter {
       : _repository = DiaryRepository(),
         this._view = view;
 
+  Future<void> fetchDailyNotes() async {
+    _repository.getAll().then((notes) {
+      _view.loadDailyNotesOnView(notes);
+      print(notes);
+    });
+  }
+
   Future<List<Diary>> getDailyNotes() async {
     List<Diary> notes = await _repository.getAll();
     return notes;

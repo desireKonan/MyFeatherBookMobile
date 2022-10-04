@@ -65,12 +65,12 @@ class _FeatherRoomPageState extends State<FeatherRoomHomePage> {
               icon: Icon(Icons.note_add, color: Colors.white60),
             ),
             BottomNavigationBarItem(
-              label: 'Objectifs',
-              icon: Icon(Icons.star, color: Colors.white60),
+              label: 'Journal',
+              icon: Icon(FeatherIcons.feather, color: Colors.white60),
             ),
             BottomNavigationBarItem(
-              label: 'Journal',
-              icon: Icon(Icons.edit, color: Colors.white60),
+              label: 'Objectifs',
+              icon: Icon(Icons.star, color: Colors.white60),
             ),
             BottomNavigationBarItem(
               label: 'Dashboard',

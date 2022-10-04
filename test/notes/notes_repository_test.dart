@@ -1,21 +1,91 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_feather_book_mobile/models/dto/notes.dart';
-import 'package:my_feather_book_mobile/models/repository/note_repository.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late NoteRepository _noteRepository;
-  late List<Notes> _notes;
+  late Database db;
 
-  setUp(() {
-    _noteRepository = NoteRepository();
-    _notes = [];
+  setUpAll(() async {
+    // Initialize ffi implementation
+    sqfliteFfiInit();
+    // Set global factory, do not use isolate here
+    databaseFactory = databaseFactoryFfiNoIsolate;
+    db = await openDatabase(inMemoryDatabasePath, version: 1,
+        onCreate: (db, version) async {
+      await db
+          .execute('CREATE TABLE Notes (id INTEGER PRIMARY KEY, text TEXT)');
+    });
   });
 
-  test("Reccupérer la liste des notes !", () {
-    _noteRepository.getAll().then((notes) => _notes = notes);
+  group("Notes CRUD Test", () {
+    test('Get all notes from Database', () async {
+      // Insert some data
+      var result = await db.query('Notes');
 
-    expect(_notes, _notes.length != 0);
+      // Check content
+      expect(result, []);
+    });
+
+    test('Get a specific note from Database', () async {
+      var note = {'id': 1, 'text': 'Première Note !'};
+
+      await db.insert('Notes', note);
+
+      var result = await db.query("Notes",
+          distinct: true, where: 'text = ?', whereArgs: [note['text']]);
+
+      expect(note, result[0]);
+    });
+
+    test('Insert a note in Database', () async {
+      var note = {'id': 2, 'text': 'Première Note !'};
+
+      int id = await db.insert('Notes', note);
+
+      expect(id, note['id']);
+    });
+
+    test('Update a specific note from Database', () async {
+      var note = {'id': 2, 'text': 'Première Note !'};
+
+      var newNote = {'id': 2, 'text': 'Seconde note !'};
+
+      int insertId = await db.insert('Notes', note);
+
+      int id = await db.update(
+        'Notes',
+        newNote,
+        where: 'id = ?',
+        whereArgs: [note['id']],
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      var result = await db.query("Notes",
+          distinct: true, where: 'text = ?', whereArgs: [newNote['text']]);
+
+      expect(newNote, result[0]);
+    });
+
+    test('Delete a specific note from Database', () async {
+      var note = {'id': 2, 'text': 'Première Note !'};
+
+      var newNote = [];
+
+      int insertId = await db.insert('Notes', note);
+
+      int deletedId = await db
+          .delete("Notes", where: 'text = ?', whereArgs: [note['text']]);
+
+      var result = await db.query("Notes",
+          distinct: true, where: 'text = ?', whereArgs: [note['text']]);
+
+      expect(newNote, result);
+    });
+
+    setUp(() async {
+      await db.close();
+    });
   });
 }

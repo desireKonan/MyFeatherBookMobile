@@ -7,12 +7,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:my_feather_book_mobile/main.dart';
 import 'package:my_feather_book_mobile/screen/counter_page.dart';
 
 void main() {
-  /*testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyCounterPage(
       title: "My counter App",
@@ -29,5 +27,5 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
-  });*/
+  });
 }
